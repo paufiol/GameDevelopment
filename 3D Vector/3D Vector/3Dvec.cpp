@@ -13,9 +13,9 @@ public:
 	}
 
 	vec3(const vec3& v) {
-		this->x = v->x;
-		this->y = v->y;
-		this->z = v->z;
+		this->x = v.x;
+		this->y = v.y;
+		this->z = v.z;
 	}
 
 	vec3(const TYPE& x, const TYPE& y, const TYPE& z) {
@@ -27,9 +27,9 @@ public:
 	vec3 operator +(const vec3& v) {
 		vec3 ret;
 
-		ret.x = this->x + v->x;
-		ret.y = this->y + v->y;
-		ret.z = this->z + v->z;
+		ret.x = this->x + v.x;
+		ret.y = this->y + v.y;
+		ret.z = this->z + v.z;
 
 		return ret;
 	}
@@ -37,37 +37,37 @@ public:
 	vec3 operator -(const vec3& v) {
 		vec3 ret;
 
-		ret.x = this->x - v->x;
-		ret.y = this->y - v->y;
-		ret.z = this->z - v->z;
+		ret.x = this->x - v.x;
+		ret.y = this->y - v.y;
+		ret.z = this->z - v.z;
 
 		return ret;
 	}
 
 	const vec3& operator +=(const vec3& v) {
 
-		this->x += v->x;
-		this->y += v->y;
-		this->z += v->z;
+		this->x += v.x;
+		this->y += v.y;
+		this->z += v.z;
 
 		return *this;
 	}
 
 	const vec3& operator -=(const vec3& v) {
 
-		this->x -= v->x;
-		this->y -= v->y;
-		this->z -= v->z;
+		this->x -= v.x;
+		this->y -= v.y;
+		this->z -= v.z;
 
 		return *this;
 	}
 
 	bool operator ==(const vec3& v) {
-		return (this->x == v->x && this->x == v->x && this->x == v->x);
+		return (this->x == v.x && this->x == v.x && this->x == v.x);
 	}
 
 	bool operator !=(const vec3& v) {
-		return (!(this->x == v->x && this->x == v->x && this->x == v->x));
+		return (!(this->x == v.x && this->x == v.x && this->x == v.x));
 	}
 
 	bool is_zero(const vec3& v) {
@@ -81,9 +81,9 @@ public:
 	}
 
 	TYPE distance_to(const vec3& v) const {
-		TYPE dx = v->x - this->x;
-		TYPE dy = v->y - this->y;
-		TYPE dz = v->z - this->z;
+		TYPE dx = v.x - this->x;
+		TYPE dy = v.y - this->y;
+		TYPE dz = v.z - this->z;
 
 		return (sqrt(dx + dy + dz));	
 	}
