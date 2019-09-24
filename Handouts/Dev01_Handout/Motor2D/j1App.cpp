@@ -10,6 +10,8 @@
 #include "j1App.h"
 //#include "config.xml"
 
+#define GET_VARIABLE_NAME(Variable) (#Variable)
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -56,7 +58,7 @@ void j1App::AddModule(j1Module* module)
 }
 
 // Called before render is available
-bool j1App::Awake()
+bool j1App::Awake(pugi::xml_node* parent)
 {
 	// TODO 3: Load config.xml file using load_file() method from the xml_document class.
 	// If everything goes well, load the top tag inside the xml_node property
@@ -69,8 +71,12 @@ bool j1App::Awake()
 
 	bool ret = true;
 
-	p2List_item<j1Module*>* item;
+	p2List_item<j1Module*>* item; //WTF
 	item = modules.start;
+
+
+	char* item_name;
+	pugi::xml_node empty;
 
 	while(item != NULL && ret == true)
 	{
@@ -78,6 +84,16 @@ bool j1App::Awake()
 		// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
 		// that can be used to read all variables for that module.
 		// Send nullptr if the node does not exist in config.xml
+		
+		//WTF how to find child.
+		item_name = GET_VARIABLE_NAME(item);
+		if (tool.find_child(item_name) != empty) {
+			parent = &tool.find_child(item_name);
+		}
+		else {
+			parent = nullptr;
+		}
+
 
 		ret = item->data->Awake();
 		item = item->next; 
