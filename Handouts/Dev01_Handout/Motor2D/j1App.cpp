@@ -71,7 +71,7 @@ bool j1App::Awake(pugi::xml_node* parent)
 
 	bool ret = true;
 
-	p2List_item<j1Module*>* item; //WTF
+	p2List_item<j1Module*>* item; 
 	item = modules.start;
 
 
@@ -85,15 +85,32 @@ bool j1App::Awake(pugi::xml_node* parent)
 		// that can be used to read all variables for that module.
 		// Send nullptr if the node does not exist in config.xml
 		
-		//WTF how to find child.
-		item_name = GET_VARIABLE_NAME(item);
+		
+		parent = nullptr;
+		const char* module_name = item->data->name.GetString();
+		if (tool.child(module_name) != NULL) {
+			parent = & tool.child(module_name);
+		}
+		
+		tool = config.child("config");
+
+		/*
+		for (pugi::xml_node i = tool.first_child(); i != tool.last_child(); i = tool.first_child().next_sibling()) {
+			if (item->data->name == i.value()) {
+				parent = &i;
+				break;
+			}
+		}*/
+
+
+		/*
 		if (tool.find_child(item_name) != empty) {
 			parent = &tool.find_child(item_name);
 		}
 		else {
 			parent = nullptr;
 		}
-
+		*/
 
 		ret = item->data->Awake();
 		item = item->next; 
@@ -102,8 +119,7 @@ bool j1App::Awake(pugi::xml_node* parent)
 	// TODO 4: Read the title from the config file
 	// and set the window title using win->SetTitle()
 	
-	const char *title = tool.child("title").child_value();
-	win->SetTitle(title);
+
 
 	return ret;
 }

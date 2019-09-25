@@ -6,5 +6,6 @@
     <fullscreen> false </fullscreen>
     <borderless> false </borderless>
   </window>
+  <input></input>
   <audio volume="256"></audio>
 </config>

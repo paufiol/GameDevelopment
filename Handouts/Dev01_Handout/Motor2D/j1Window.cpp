@@ -61,8 +61,13 @@ bool j1Window::Awake()
 
 		//TODO 7: Move "Todo 4" code to the awake method on the window module
 		//Pass the title as a variable when creating the window
+		
+		//How to acces parent (Awake's passed node). 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-
+		
+		//const char *title = tool.child("title").child_value();
+		//win->SetTitle(title);
+		
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
