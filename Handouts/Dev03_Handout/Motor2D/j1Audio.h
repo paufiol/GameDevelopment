@@ -23,6 +23,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Update(float dt);
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
@@ -32,10 +34,17 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
+
+	int					volume = 64;
+
 private:
 
 	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+
+	
 };
 
 #endif // __j1AUDIO_H__

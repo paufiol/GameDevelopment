@@ -52,6 +52,18 @@ bool j1Scene::Update(float dt)
 		App->input->load = true;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT) {
+		App->audio->volume += 1;
+		if (App->audio->volume > 128) 
+		{ App->audio->volume = 128; }
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) {
+		App->audio->volume -= 1;
+		if (App->audio->volume < 0) 
+		{ App->audio->volume = 0; }
+	}
+
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y += 1;
 

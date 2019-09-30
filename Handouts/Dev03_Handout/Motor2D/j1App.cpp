@@ -152,10 +152,10 @@ void j1App::PrepareUpdate()
 void j1App::FinishUpdate()
 {
 	// TODO 2: This is a good place to call load / Save functions
-	if (App->input->save == true) {
-		
+	if (App->input->save == true) {		
 		App->input->save = false;
 		App->input->load = false;
+		Save();
 	}
 	if (App->input->load == true) {
 		App->input->load = false;
@@ -314,24 +314,18 @@ bool j1App::Save() {
 	pugi::xml_document	savegame_file;
 	pugi::xml_node		savegame;
 
-	pugi::xml_parse_result result = savegame_file.load_file("savegame.xml");
+	ret = savegame_file.append_child("save");
 
-	if (result == NULL)
-	{
-		LOG("Could not load map xml file savegame.xml. pugi error: %s", result.description());
-		ret = false;
-	}
-	else
-	{
-		savegame = savegame_file.child("save");
-	}
+	savegame = savegame_file.child("save");
 
 	p2List_item<j1Module*>* item;
 
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
-		ret = item->data->Save(savegame.child(item->data->name.GetString()));
+		ret = item->data->Save(savegame.append_child(item->data->name.GetString()));
 	}
+
+	ret = savegame_file.save_file("savegame.xml");
 
 	return ret;
 }

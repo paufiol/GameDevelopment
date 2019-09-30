@@ -99,6 +99,16 @@ bool j1Render::Load(pugi::xml_node& save) {
 
 // TODO 8: Create the save method on the renderer. Fill the camera's data
 // using append_child and append_attribute
+bool j1Render::Save(pugi::xml_node& save) {
+	//camera.x = save.child("camera").attribute("x").as_int();
+	//camera.y = save.child("camera").attribute("y").as_int();
+
+	save.append_child("camera");
+	save.child("camera").append_attribute("x").set_value(camera.x);
+	save.child("camera").append_attribute("y").set_value(camera.y);
+
+	return true;
+}
 
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
