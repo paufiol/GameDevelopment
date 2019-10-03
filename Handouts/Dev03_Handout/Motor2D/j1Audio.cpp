@@ -1,8 +1,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1FileSystem.h"
 #include "j1Audio.h"
+#include "p2List.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -172,27 +171,3 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
-
-bool j1Audio::Update(float dt) {
-	bool ret = true; 
-
-	Mix_VolumeMusic(volume);
-
-	return ret;
-}
-
-bool j1Audio::Load(pugi::xml_node& save) {
-	
-	volume = save.child("music").attribute("volume").as_int();
-	
-	return true;
-}
-
-bool j1Audio::Save(pugi::xml_node& save) {
-	
-	save.append_child("music");
-	save.child("music").append_attribute("volume").set_value(volume);
-
-	return true;
-}
-
