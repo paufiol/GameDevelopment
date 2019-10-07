@@ -33,9 +33,9 @@ void j1Map::Draw()
 
 	// TODO 5: Prepare the loop to iterate all the tiles in a layer
 	
-	MapLayer* mapLayer = data.layers.start->data;
+	MapLayer* mapLayer = data.layers[0];
 
-	pugi::xml_node Iterator = map_file.child("map").child("layer").child("data").child("tile"); 
+	pugi::xml_node* Iterator = & map_file.child("map").child("layer").child("data").child("tile"); 
 
 	for (int y = 0; y < data.height; y++) {
 		for (int x = 0; x < data.width; x++) {
@@ -43,14 +43,16 @@ void j1Map::Draw()
 			
 			App->render->Blit(data.tilesets[0]->texture, 
 				data.tilesets[0]->GetPos(x, y).x, data.tilesets[0]->GetPos(x, y).y,
-				data.tilesets[0]->TileRect(Iterator.attribute("gid").as_uint()));
-			//Iterator.attribute("gid").as_uint()
-
-			int debug = data.tilesets[0]->GetPos(x, y).y;
-			 Iterator = Iterator.next_sibling("tile");
+				data.tilesets[0]->TileRect(Iterator->attribute("gid").as_uint()));
+			
+			
+			//int debug = data.tilesets[0]->GetPos(x, y).y;
+			 Iterator = & Iterator->next_sibling("tile");
 
 		}
 	}
+	
+
 
 	/*while (Iterator != nullptr) {
 
@@ -63,7 +65,7 @@ void j1Map::Draw()
 	
 	
 	// TODO 9: Complete the draw function
-
+	//map_loaded = false;
 }
 
 
