@@ -44,9 +44,8 @@ void j1Map::Draw()
 			App->render->Blit(data.tilesets[0]->texture, 
 				data.tilesets[0]->GetPos(x, y).x, data.tilesets[0]->GetPos(x, y).y,
 				data.tilesets[0]->TileRect(Iterator->attribute("gid").as_uint()));
-			
-			
-			//int debug = data.tilesets[0]->GetPos(x, y).y;
+			//SDL_Rect* debug = data.tilesets[0]->TileRect(Iterator->attribute("gid").as_uint());
+		
 			 Iterator = & Iterator->next_sibling("tile");
 
 		}
@@ -289,7 +288,10 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		p2SString debug =folder.GetString();
+		debug += image.attribute("source").as_string();
+		//PATH(folder.GetString(), image.attribute("source").as_string())
+		set->texture = App->tex->Load(debug.GetString());
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();

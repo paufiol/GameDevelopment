@@ -29,17 +29,18 @@ struct MapLayer
 struct TileSet
 {
 	// TODO 7: Create a method that receives a tile id and returns it's Rect
+	SDL_Rect* Tilerect = new SDL_Rect;
 	SDL_Rect* TileRect(uint tile_id) {
-		SDL_Rect ret; 
+		SDL_Rect* ret = Tilerect; 
 		int x = ((tile_id - firstgid) % num_tiles_width);
 		int y = ((tile_id - firstgid) / num_tiles_width);
 
-		ret.x = x*tile_width  + margin + spacing*x;
-		ret.y = y*tile_height + margin + spacing*y;
-		ret.w = tile_width;
-		ret.h = tile_height;
+		ret->x = x*tile_width  + margin + spacing*x;
+		ret->y = y*tile_height + margin + spacing*y;
+		ret->w = tile_width;
+		ret->h = tile_height;
 
-		return &ret;
+		return ret;
 	}
 
 	inline p2Point<uint> GetPos(uint x, uint y) {
