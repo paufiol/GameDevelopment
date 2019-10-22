@@ -17,7 +17,7 @@ enum type {
 	TYPE_FLOAT
 };
 
-struct Property
+struct Properties
 {
 	p2SString	name;
 	type		v_type;
@@ -37,7 +37,7 @@ struct MapLayer
 	int			width;
 	int			height;
 	uint*		data;
-	p2List<Property*>*	properties;
+	Properties	properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -124,7 +124,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadProperties(pugi::xml_node& node, p2List<Property*>* properties);
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 	TileSet* GetTilesetFromTileId(int id) const;
 

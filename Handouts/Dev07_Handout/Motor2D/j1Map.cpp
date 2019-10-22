@@ -414,36 +414,28 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 }
 
 // Load a group of properties from a node and fill a list with it
-bool j1Map::LoadProperties(pugi::xml_node& node, p2List<Property*>* properties)
+bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
 	bool ret = false;
 
 	// TODO 6: Fill in the method to fill the custom properties from 
 	// an xml_node
-
 	pugi::xml_node property_node = node.child("properties").child("property");
 	while (property_node != nullptr) {
-		Property property;
-		
-		
-		property.name = node.attribute("name").as_string();
+		properties.name = node.attribute("name").as_string();
 
 		if (node.attribute("type").as_string() == "bool") {
-			property.v_type = TYPE_BOOL;
-			property.value.v_bool = node.attribute("value").as_bool();
+			properties.v_type = TYPE_BOOL;
+			properties.value.v_bool = node.attribute("value").as_bool();
 		}
 		else if (node.attribute("type").as_string() == "float") {
-			property.v_type = TYPE_FLOAT;
-			property.value.v_float = node.attribute("value").as_float();
+			properties.v_type = TYPE_FLOAT;
+			properties.value.v_float = node.attribute("value").as_float();
 		}
 		else if (node.attribute("type").as_string() == "int") {
-			property.v_type = TYPE_INT;
-			property.value.v_int = node.attribute("value").as_int();
+			properties.v_type = TYPE_INT;
+			properties.value.v_int = node.attribute("value").as_int();
 		}
-
-		
-		properties->add(&property);
-		
 		property_node = property_node.next_sibling();
 	}
 	return ret;
