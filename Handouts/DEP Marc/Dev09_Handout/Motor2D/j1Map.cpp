@@ -57,6 +57,7 @@ void j1Map::Path(int x, int y)
 	path.Clear();
 	goal = WorldToMap(x, y);
 	
+	if (MovementCost(goal.x, goal.y) != -1) {
 	if(visited.find(goal) == -1)
 	PropagateAStar();
 
@@ -67,7 +68,7 @@ void j1Map::Path(int x, int y)
 	iPoint start;
 	start.x = 19, start.y = 4;
 	
-	if (MovementCost(goal.x, goal.y) != -1) {
+
 		path.PushBack(goal);
 		while (current != start) {
 			current = breadcrumbs[visited.find(current)];
@@ -83,17 +84,26 @@ void j1Map::PropagateAStar()
 	iPoint curr;
 	while (frontier.Pop(curr) && visited.find(goal) == -1)
 	{
-		iPoint neighbors[4];
+		iPoint neighbors[8];
 		neighbors[0].create(curr.x + 1, curr.y + 0);
 		neighbors[1].create(curr.x + 0, curr.y + 1);
 		neighbors[2].create(curr.x - 1, curr.y + 0);
 		neighbors[3].create(curr.x + 0, curr.y - 1);
 
-		for (uint i = 0; i < 4; ++i)
+		//diagonals
+		neighbors[4].create(curr.x + 1, curr.y + 1);
+		neighbors[5].create(curr.x - 1, curr.y + 1);
+		neighbors[6].create(curr.x - 1, curr.y - 1);
+		neighbors[7].create(curr.x - 1, curr.y - 1);
+
+		for (uint i = 0; i < 8; ++i)
 		{
-			int new_cost = cost_so_far[curr.x][curr.y] + curr.DistanceNoSqrt(goal);
-			if ((visited.find(neighbors[i]) == -1 || new_cost < cost_so_far[neighbors[i].x][neighbors[i].y])) {
+			int new_cost = cost_so_far[curr.x][curr.y] + abs(curr.DistanceNoSqrt(goal));
+			// || new_cost < cost_so_far[neighbors[i].x][neighbors[i].y]
+			if (visited.find(neighbors[i]) == -1) {
 				cost_so_far[neighbors[i].x][neighbors[i].y] = new_cost;
+				
+				
 				frontier.Push(neighbors[i], new_cost);
 				breadcrumbs.add(curr);
 
