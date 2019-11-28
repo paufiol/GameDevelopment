@@ -67,7 +67,7 @@ const p2DynArray<iPoint>* j1PathFinding::GetLastPath() const
 // PathList ------------------------------------------------------------------------
 // Looks for a node in this list and returns it's list node or NULL
 // ---------------------------------------------------------------------------------
-const p2List_item<PathNode>* PathList::Find(const iPoint& point) const
+p2List_item<PathNode>* PathList::Find(const iPoint& point) const
 {
 	p2List_item<PathNode>* item = list.start;
 	while(item)
@@ -170,7 +170,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	int ret = -1;
 
 	// TODO 1: if origin or destination are not walkable, return -1
-	if (IsWalkable(origin) || IsWalkable(destination)) 	return ret;
+	if (IsWalkable(origin) == false || IsWalkable(destination) == false) 	return ret;
 
 	// TODO 2: Create two lists: open, close
 	// Add the origin tile to open
@@ -184,14 +184,14 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 	open.list.add(PathNode(0, 0, origin, nullptr));
 
-	while (open.list.count != 0) {
+	while (open.list.count() != 0) {
 
 
-		// TODO 3: Move the lowest score cell from open list to the closed list
+		//Move the lowest score cell from open list to the closed list
 		p2List_item<PathNode>* node = close.list.add(open.GetNodeLowestScore()->data);
 		open.list.del(open.GetNodeLowestScore());
 
-		// TODO 4: If we just added the destination, we are done!
+		//If we just added the destination, we are done!
 		if (node->data.pos == destination) {
 			last_path.Clear();
 
@@ -213,31 +213,44 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		}
 
 	
-		// TODO 5: Fill a list of all adjancent nodes
+		// Fill a list of all adjancent nodes
 		PathList neighbours;
 		node->data.FindWalkableAdjacents(neighbours);
 
 
-		// TODO 6: Iterate adjancent nodes:
+		// Iterate adjancent nodes:
 
 		// If it is NOT found, calculate its F and add it to the open list
 		// If it is already in the open list, check if it is a better path (compare G)
 		// If it is a better path, Update the parent
+		
 		p2List_item<PathNode>* item = neighbours.list.start;
 
-		for (; item; item->next) {
+		while(item != nullptr)  {
 
 			// ignore nodes in the closed list
-			if (close.Find(item->data.pos) == NULL) {
-
+			if (close.Find(item->data.pos) != NULL) {
 				
-				item->data.CalculateF(destination);
+				item = item->next;
+				continue;
 			}
 
+			item->data.CalculateF(destination);
+			
+
+			if (open.Find(item->data.pos) == NULL) {
+				open.list.add(item->data);
+			}
+			else if (item->data.g < open.Find(item->data.pos)->data.g) {
+					
+				open.Find(item->data.pos)->data.parent = item->data.parent;
+			}
+
+			item = item->next;
 			iterations++;
 		}
 	}
-
+	ret = iterations;
 	return ret;
 }
 
