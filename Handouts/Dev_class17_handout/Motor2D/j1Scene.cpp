@@ -46,7 +46,7 @@ bool j1Scene::Start()
 
 	// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
 	// TODO 4: Create the text "Hello World" as a UI element
-
+	UI_elem* banner = App->gui->CreateUIelement(SDL_Rect({ 485, 829, 328, 103 }), UI_IMAGE);
 	return true;
 }
 

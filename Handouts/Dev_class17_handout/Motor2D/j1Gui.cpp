@@ -44,6 +44,16 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	p2List_item<UI_elem*>* UIter = UI_List.start;
+
+	while (UIter != NULL)
+	{
+		App->render->Blit(atlas, UIter->data->position.x, UIter->data->position.y, UIter->data->);
+
+
+		UIIter = UIIter->next;
+	}
+
 	return true;
 }
 
@@ -63,11 +73,46 @@ const SDL_Texture* j1Gui::GetAtlas() const
 
 UI_elem* j1Gui::CreateUIelement(SDL_Rect rect, UI_Type type)
 {
-	UI_elem* ret = (UI_elem*) new UI_button(rect, type);
+	UI_elem* ret;
 
-	UI_List->add(ret);
+	switch (type) {
+		case UI_TEXT:
+			ret = (UI_elem*) new UI_Text(rect, "");
+			break;
+		case UI_IMAGE:
+			ret = (UI_elem*) new UI_Image(rect);
+			break;
+		
+		case UI_UNKNOWN:
+			LOG("Something went wrong, UI_UNKWNOWN");
+			break;
+	}
+
+	UI_List.add(ret);
 
 	return ret;
+}
+
+UI_Image* j1Gui::CreateImage(SDL_Rect rect) {
+
+	UI_Image* ret = new UI_Image(rect);
+	
+	UI_List.add(ret);
+
+	return ret;
+};
+
+UI_Text* j1Gui::CreateText(SDL_Rect rect, const char* text) {
+	
+	UI_Text* ret = new UI_Text(rect, text);
+
+	UI_List.add(ret);
+
+	return ret;
+};
+
+bool j1Gui::deleteUIelement(UI_elem* elem) {
+	return UI_List.del(UI_List.At(UI_List.find(elem)));
 }
 
 // class Gui ---------------------------------------------------
